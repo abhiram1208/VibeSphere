@@ -1,0 +1,104 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+function CreatePost() {
+  const [formData, setFormData] = useState({
+    title: '',
+    content: ''
+  });
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('content', formData.content);
+    if (image) data.append('image', image);
+
+    try {
+      await axios.post('http://localhost:5000/api/posts', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true
+      });
+
+      alert('Post created successfully!');
+      navigate('/');
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to create post");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <h1 className="text-4xl font-bold mb-8 text-center">Create New Post</h1>
+
+      <div className="card p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <input
+            type="text"
+            name="title"
+            placeholder="Post Title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full px-5 py-4 text-lg rounded-2xl border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            required
+          />
+
+          <textarea
+            name="content"
+            placeholder="Write your thoughts..."
+            value={formData.content}
+            onChange={handleChange}
+            rows="8"
+            className="w-full px-5 py-4 rounded-2xl border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            required
+          />
+
+          <div>
+            <label className="block text-sm mb-2 font-medium">Upload Image (Optional)</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="block w-full text-sm text-zinc-500 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:bg-violet-100 file:text-violet-700 hover:file:bg-violet-200"
+            />
+          </div>
+
+          {preview && (
+            <img src={preview} alt="Preview" className="w-full h-64 object-cover rounded-2xl" />
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-2xl font-semibold text-lg hover:brightness-110 transition disabled:opacity-50"
+          >
+            {loading ? "Publishing..." : "Publish Post"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default CreatePost;
