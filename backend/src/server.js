@@ -24,8 +24,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: "https://6a5ce249729238ebc8043686--vibespherehub.netlify.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: true,
   credentials: true
 }));
 
