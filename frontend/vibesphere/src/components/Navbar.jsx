@@ -16,6 +16,9 @@ function Navbar() {
         <Link to="/" className="text-3xl font-bold bg-linear-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
           VibeSphere
         </Link>
+        <p className="text-lg font-semibold ">
+          Hello, {user ? JSON.parse(user).name : 'Guest'}
+        </p>
 
         <div className="flex items-center gap-8 text-sm font-medium">
           <Link to="/" className="hover:text-violet-600 transition-colors">Home</Link>

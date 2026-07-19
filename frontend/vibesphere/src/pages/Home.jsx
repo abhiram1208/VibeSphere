@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Heart, MessageCircle, Clock } from 'lucide-react';
+import { Heart, MessageCircle } from 'lucide-react';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -10,13 +10,18 @@ function Home() {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('https://vibesphere-1-ij68.onrender.com/api/posts');
-      
+
+      const res = await axios.get(
+        'https://vibesphere-1-ij68.onrender.com/api/posts'
+      );
+
       if (res.data.success) {
         setPosts(res.data.posts || []);
       } else {
         setPosts([]);
       }
+
+      setError(null);
     } catch (err) {
       console.error("Error fetching posts:", err);
       setError("Failed to load posts");
@@ -26,14 +31,19 @@ function Home() {
     }
   };
 
-  // Fetch posts when component loads
+  // Initial fetch
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  // Auto refresh every 5 seconds (optional)
+  // Auto refresh (optimized)
   useEffect(() => {
-    const interval = setInterval(fetchPosts, 5000);
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        fetchPosts();
+      }
+    }, 10000); // every 10 sec
+
     return () => clearInterval(interval);
   }, []);
 
@@ -75,7 +85,9 @@ function Home() {
               )}
 
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-3 line-clamp-2">{post.title}</h3>
+                <h3 className="text-xl font-semibold mb-3 line-clamp-2">
+                  {post.title}
+                </h3>
                 
                 <p className="text-zinc-600 dark:text-zinc-400 line-clamp-4 mb-5">
                   {post.content}

@@ -24,33 +24,45 @@ function CreatePost() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    const data = new FormData();
-    data.append('title', formData.title);
-    data.append('content', formData.content);
-    if (image) data.append('image', image);
+  const data = new FormData();
+  data.append('title', formData.title);
+  data.append('content', formData.content);
+  if (image) data.append('image', image);
 
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-await axios.post('https://vibesphere-1-ij68.onrender.com/api/posts', data, {
-  headers: {
-    'Content-Type': 'multipart/form-data',
-    Authorization: `Bearer ${token}`
-  }
-});
-
-      alert('Post created successfully!');
-      navigate('/');
-    } catch (error) {
-      alert(error.response?.data?.message || "Failed to create post");
-    } finally {
-      setLoading(false);
+    // 🔒 Prevent request if not logged in
+    if (!token) {
+      alert("Please login first");
+      navigate('/login');
+      return;
     }
-  };
+
+    await axios.post(
+      'https://vibesphere-1-ij68.onrender.com/api/posts',
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+      }
+    );
+
+    alert('Post created successfully!');
+    navigate('/');
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Failed to create post");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="max-w-2xl mx-auto">
