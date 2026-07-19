@@ -34,10 +34,14 @@ function CreatePost() {
     if (image) data.append('image', image);
 
     try {
-      await axios.post('https://vibesphere-1-ij68.onrender.com/api/posts', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true
-      });
+      const token = localStorage.getItem("token");
+
+await axios.post('https://vibesphere-1-ij68.onrender.com/api/posts', data, {
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${token}`
+  }
+});
 
       alert('Post created successfully!');
       navigate('/');

@@ -20,17 +20,16 @@ const app = express();
 // ======================
 // Global Middleware
 // ======================
-app.use(helmet());
+
+
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://vibespherehub.netlify.app"
-  ],
-  credentials: true,
+  origin: "https://6a5ce249729238ebc8043686--vibespherehub.netlify.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 
-
+app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));

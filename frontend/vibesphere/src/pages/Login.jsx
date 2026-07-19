@@ -18,11 +18,14 @@ function Login() {
         password
       }, { withCredentials: true });
 
-      if (res.data.success) {
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        alert('Login Successful!');
-        navigate('/');
-      }
+    if (res.data.success) {
+  localStorage.setItem('user', JSON.stringify(res.data.user));
+
+  localStorage.setItem('token', res.data.token);
+
+  alert('Login Successful!');
+  navigate('/');
+}
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     } finally {
