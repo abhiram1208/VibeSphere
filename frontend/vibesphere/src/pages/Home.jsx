@@ -10,7 +10,7 @@ function Home() {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/posts');
+      const res = await axios.get('https://vibesphere-1-ij68.onrender.com/api/posts');
       
       if (res.data.success) {
         setPosts(res.data.posts || []);

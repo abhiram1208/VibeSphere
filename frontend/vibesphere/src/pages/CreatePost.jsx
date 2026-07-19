@@ -34,7 +34,7 @@ function CreatePost() {
     if (image) data.append('image', image);
 
     try {
-      await axios.post('http://localhost:5000/api/posts', data, {
+      await axios.post('https://vibesphere-1-ij68.onrender.com/api/posts', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });
