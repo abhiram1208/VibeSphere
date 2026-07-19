@@ -25,7 +25,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://.netlify.app"
+    "https://vibespherehub.netlify.app"
   ],
   credentials: true,
 }));
