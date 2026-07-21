@@ -12,33 +12,47 @@ function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
-      <div className="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
-        <Link to="/" className="text-3xl font-bold bg-linear-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent"
+        >
           VibeSphere
         </Link>
-        <p className="text-lg font-semibold ">
+
+        {/* User */}
+        <p className="text-sm sm:text-lg font-medium">
           Hello, {user ? JSON.parse(user).name : 'Guest'}
         </p>
 
-        <div className="flex items-center gap-8 text-sm font-medium">
-          <Link to="/" className="hover:text-violet-600 transition-colors">Home</Link>
-          <Link to="/create" className="flex items-center gap-2 hover:text-violet-600 transition-colors">
-            <PenSquare size={18} /> Create
+        {/* Actions */}
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-sm">
+          <Link to="/" className="hover:text-violet-600 transition">
+            Home
+          </Link>
+
+          <Link
+            to="/create"
+            className="flex items-center gap-1 hover:text-violet-600 transition"
+          >
+            <PenSquare size={16} /> Create
           </Link>
 
           {user ? (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600 text-white hover:bg-red-700 transition-all"
+              className="flex items-center gap-1 px-3 py-2 sm:px-4 rounded-xl bg-red-600 text-white text-sm hover:bg-red-700"
             >
-              <LogOut size={18} /> Logout
+              <LogOut size={16} /> Logout
             </button>
           ) : (
             <Link
               to="/login"
-              className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 transition-all"
+              className="flex items-center gap-1 px-3 py-2 sm:px-4 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
             >
-              <User size={18} /> Login
+              <User size={16} /> Login
             </Link>
           )}
         </div>
